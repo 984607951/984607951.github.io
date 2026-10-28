@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e1a40"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<title>财富自由计算器 · Financial Freedom Calculator</title>
+<style>
+:root{--bg:#eef5ff;--bg2:#d6ebf6;--card:#fff;--tx:#0e1a40;--mu:#5a6a8a;--ac:#12a594;--ac2:#3b5bdb;--ln:#cfdcf0;--gold:#ffc857;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1230;--bg2:#10244a;--card:#14204a;--tx:#eaf3ff;--mu:#9db0d3;--ln:#27396b}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;font:16px/1.6 system-ui,-apple-system,"PingFang SC","Noto Sans CJK SC","Malgun Gothic","Hiragino Sans",sans-serif;color:var(--tx);background:linear-gradient(170deg,var(--bg),var(--bg2));min-height:100vh;overflow-x:hidden}
+.fl{position:fixed;font-size:28px;opacity:.16;animation:fl 14s ease-in-out infinite;pointer-events:none}
+@keyframes fl{50%{transform:translateY(-40px) rotate(20deg)}}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;max-width:980px;margin:auto;position:relative}
+.logo{font-weight:800}
+select{font:inherit;padding:6px 10px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx)}
+main{max-width:980px;margin:auto;padding:0 16px 60px;position:relative}
+h1{font-size:clamp(28px,6vw,50px);line-height:1.15;margin:10px 0;background:linear-gradient(90deg,var(--ac),var(--ac2),var(--ac));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 6s linear infinite}
+@keyframes sh{to{background-position:200%}}
+.sub{color:var(--mu);margin:0 0 22px;max-width:60ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.c{background:var(--card);border:1px solid var(--ln);border-radius:18px;padding:16px;transition:.25s}
+.c:hover,.c:focus-within{transform:translateY(-4px);box-shadow:0 10px 26px #12a59430;border-color:var(--ac)}
+.c label{display:flex;gap:10px;align-items:center;font-weight:700}
+.ic{font-size:26px;display:inline-block}.c:focus-within .ic{animation:bn .6s}
+@keyframes bn{40%{transform:translateY(-8px) scale(1.25)}}
+.c input{width:100%;margin:8px 0;padding:10px 12px;font:inherit;font-size:18px;border-radius:12px;border:2px solid var(--ln);background:transparent;color:var(--tx);outline:0}
+.c input:focus{border-color:var(--ac)}
+.h{margin:0;font-size:13.5px;color:var(--mu)}
+.go{display:block;margin:26px auto;padding:14px 40px;font:inherit;font-weight:800;font-size:18px;color:#fff;border:0;border-radius:99px;background:linear-gradient(90deg,var(--ac),var(--ac2));cursor:pointer;box-shadow:0 8px 24px #3b5bdb40;transition:.2s}
+.go:hover{transform:scale(1.06)}.go:active{transform:scale(.97)}
+#res{display:none;text-align:center}
+#card{background:#fffbea;color:#0e1a40;border-radius:24px;padding:26px 18px;max-width:460px;margin:20px auto;border:3px solid #f2b705}
+#card svg{width:190px;height:190px;animation:pop 1s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(0) rotate(-180deg)}}
+.shine{animation:spin 8s linear infinite;transform-origin:100px 95px}@keyframes spin{to{transform:rotate(360deg)}}
+#card h2{margin:6px 0;font-size:26px}
+.st{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.st div{background:#fff;border-radius:12px;padding:8px;font-size:13px;color:#5a6a8a}.st b{display:block;font-size:19px;color:#0e1a40}
+#card .h{margin-top:12px}
+.bt{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.b2{padding:10px 20px;border-radius:99px;border:2px solid var(--ac);background:transparent;color:var(--ac);font:inherit;font-weight:700;cursor:pointer;transition:.2s}
+.b2:hover{background:var(--ac);color:#fff}
+.m{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:9;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));overscroll-behavior:contain}.m.on{display:flex}
+.mb{background:var(--card);border-radius:22px;padding:20px;max-width:640px;width:100%;max-height:90vh;max-height:90dvh;overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;animation:up .4s}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+.ln{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:dr 2s .2s forwards}@keyframes dr{to{stroke-dashoffset:0}}
+.ms{padding-left:20px;margin:10px 0}.ms li{margin:4px 0}
+.cf{position:fixed;top:-14px;width:8px;height:12px;animation:fall 2.6s linear forwards;z-index:8}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.tt{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0e1a40;color:#fff;padding:12px 18px;border-radius:14px;z-index:20;max-width:90vw;text-align:center;box-shadow:0 8px 24px #0006}
+@media (max-width:480px){main{padding:0 12px 50px}.c{padding:14px}#card{padding:22px 12px;margin:16px auto}#card h2{font-size:22px}.st b{font-size:17px}.go{width:100%;padding:16px}.bt .b2{flex:1 1 140px}.mb{padding:16px;border-radius:18px}.fl{font-size:22px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style></head><body>
+<div id="bg"></div>
+<header><div class="logo">🔥 Freedom Calc</div><select id="lang" aria-label="Language"></select></header>
+<main>
+<h1 id="t"></h1><p class="sub" id="s"></p>
+<div class="grid" id="fm"></div>
+<button class="go" id="go"></button>
+<section id="res">
+<div id="card">
+<svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".5" stop-color="#f2b705"/><stop offset="1" stop-color="#d9770a"/></linearGradient></defs>
+<polygon points="70,150 48,200 80,188 100,198 100,150" fill="#12a594"/><polygon points="130,150 152,200 120,188 100,198 100,150" fill="#3b5bdb"/>
+<g class="shine"><circle cx="100" cy="95" r="88" fill="none" stroke="#f2b705" stroke-width="3" stroke-dasharray="4 8"/></g>
+<circle cx="100" cy="95" r="76" fill="url(#g)"/><circle cx="100" cy="95" r="64" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3"/>
+<text x="100" y="74" text-anchor="middle" font-size="24" fill="#fff">★</text>
+<text id="by" x="100" y="113" text-anchor="middle" font-size="38" font-weight="900" fill="#fff"></text>
+<text id="bk" x="100" y="136" text-anchor="middle" font-size="13" font-weight="700" fill="#fff"></text></svg>
+<h2 id="bt"></h2><div class="st" id="st"></div><p class="h" id="ft"></p>
+</div>
+<div class="bt"><button class="b2" id="sh"></button><button class="b2" id="pl"></button></div>
+</section>
+</main>
+<div class="m" id="pm"><div class="mb"><h3 id="pt" style="margin-top:0"></h3><div id="pc"></div><p style="text-align:center"><button class="b2" data-x>✕</button></p></div></div>
+<div class="m" id="im"><div class="mb" style="text-align:center"><img id="img" alt="" style="max-width:100%;border-radius:14px"><p class="h" id="ih"></p><div class="bt" style="margin-top:10px"><button class="b2" id="nsh" style="display:none"></button><button class="b2" data-x>✕</button></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const L={
+zh:{n:"中文",lg:"财富自由计算器",s:"算一算：你的资产，哪一年开始能养活你的生活？",go:"🚀 开始计算",
+f:[["当前年龄","你今年几岁，用来推算哪一年实现自由。"],["已有可投资资产","存款、基金、股票等能用来投资的钱；自住房、自用车不算。金额请统一币种。"],["每月税后收入","每月实际到手的钱，工资和副业都算。"],["每月现有支出","你现在每月真实花掉的钱：吃住行、娱乐、还贷都要算进去。"],["自由后每月想花多少","理想生活每月要花多少（按今天物价算），它决定目标资产的大小，是最关键的一项。"],["预期年化收益率 %","投资一年大概赚几个百分点。长期稳健取4–8，别太乐观。"],["通胀率 %","物价每年上涨多少，钱会慢慢变“毛”。通常取2–3。"],["安全提取率 %","自由后每年从本金里取多少花。4%是经典值，取得越少越安全。"]],
+bd:"{n}岁财富自由",bk:"自由",st:["目标资产","还需年数","每月储蓄","实际年化收益"],ft:"目标资产 = 自由后年支出 ÷ 提取率（按今天的购买力）。结果仅供参考，不构成投资建议。",sh:"📸 生成分享图",pl:"📊 储蓄计划",pt:"你的长期储蓄计划",l1:"当前计划",l2:"每月多存20%",ms:"{a}岁：资产达 {v}（{p}%）",fast:"每月多存 {s}（+20%），可提前 {y} 年实现自由！",sv:"建议保持每月储蓄 {s}，并坚持长期投资。",ih:"长按（或右键）保存图片，分享到社交平台",shr:"分享",done:"🎉 你的资产已超过目标，已经财富自由！",no:"按目前收支，80年内无法达成。试试提高收入、降低支出或自由后开销。",bad:"请检查输入：年龄、自由后支出、提取率须大于0。"},
+en:{n:"English",lg:"Financial Freedom Calculator",s:"Find out the year your assets can finally pay for your life.",go:"🚀 Calculate",
+f:[["Current age","Your age today; used to work out the year you’ll be free."],["Investable assets","Savings, funds and stocks you can invest. Your home and car don’t count. Use one currency throughout."],["Monthly income (after tax)","Money that actually lands in your account, salary and side income included."],["Monthly spending now","What you really spend each month: rent, food, travel, fun, loan payments."],["Monthly spending when free","The life you want, priced at today’s costs. It sets your target, so it’s the key input."],["Expected annual return %","Yearly investment gain. Steady long-term portfolios use 4–8; don’t be too optimistic."],["Inflation %","How fast prices rise, so money slowly loses power. Usually 2–3."],["Safe withdrawal rate %","Share of your nest egg spent per year once free. 4% is the classic; lower is safer."]],
+bd:"Free at {n}",bk:"FREE",st:["Target assets","Years to go","Monthly saving","Real return"],ft:"Target = yearly spending ÷ withdrawal rate (today’s purchasing power). For reference only, not investment advice.",sh:"📸 Share image",pl:"📊 Savings plan",pt:"Your long-term savings plan",l1:"Current plan",l2:"Save 20% more",ms:"Age {a}: assets reach {v} ({p}%)",fast:"Saving {s} more each month (+20%) gets you free {y} years sooner!",sv:"Keep saving {s} a month and stay invested for the long run.",ih:"Press and hold (or right-click) to save, then share it",shr:"Share",done:"🎉 Your assets already exceed the target. You’re financially free!",no:"At this pace the goal is out of reach within 80 years. Raise income, cut spending, or lower your target lifestyle.",bad:"Check inputs: age, future spending and withdrawal rate must be above 0."},
+ko:{n:"한국어",lg:"경제적 자유 계산기",s:"내 자산이 내 생활비를 감당하게 되는 해를 계산해 보세요.",go:"🚀 계산하기",
+f:[["현재 나이","올해 나이입니다. 자유를 이루는 연도를 계산하는 데 쓰입니다."],["투자 가능 자산","예금, 펀드, 주식 등 투자할 수 있는 돈입니다. 실거주 집과 자동차는 제외하고, 통화는 하나로 통일하세요."],["월 소득(세후)","실제로 통장에 들어오는 돈입니다. 월급과 부업을 모두 포함하세요."],["현재 월 지출","지금 실제로 쓰는 돈: 주거, 식비, 교통, 여가, 대출 상환까지 모두 포함합니다."],["자유 이후 월 지출","원하는 생활에 드는 월 비용(오늘 물가 기준). 목표 자산을 결정하는 가장 중요한 항목입니다."],["기대 연수익률 %","투자로 1년에 버는 비율입니다. 장기 안정형은 4–8%를 쓰고 너무 낙관하지 마세요."],["물가상승률 %","물가가 오르면서 돈의 가치가 줄어듭니다. 보통 2–3%를 씁니다."],["안전 인출률 %","자유 이후 매년 원금에서 꺼내 쓰는 비율입니다. 4%가 고전적 기준이며 낮을수록 안전합니다."]],
+bd:"{n}세 경제적 자유",bk:"자유",st:["목표 자산","남은 기간(년)","월 저축액","실질 수익률"],ft:"목표 자산 = 자유 후 연간 지출 ÷ 인출률(오늘의 구매력 기준). 참고용이며 투자 조언이 아닙니다.",sh:"📸 공유 이미지",pl:"📊 저축 계획",pt:"나의 장기 저축 계획",l1:"현재 계획",l2:"20% 더 저축",ms:"{a}세: 자산 {v} 달성({p}%)",fast:"매달 {s}(+20%) 더 저축하면 {y}년 일찍 자유로워집니다!",sv:"매달 {s} 저축을 유지하고 장기 투자를 이어가세요.",ih:"길게 누르거나 우클릭해 저장한 뒤 공유하세요",shr:"공유",done:"🎉 자산이 이미 목표를 넘었습니다. 경제적 자유를 이루셨어요!",no:"현재 수입과 지출로는 80년 안에 달성하기 어렵습니다. 수입을 늘리거나 지출을 줄여 보세요.",bad:"입력을 확인하세요: 나이, 자유 후 지출, 인출률은 0보다 커야 합니다."},
+ja:{n:"日本語",lg:"経済的自由 計算機",s:"資産が生活費をまかなえるようになる年を計算しましょう。",go:"🚀 計算する",
+f:[["現在の年齢","今の年齢です。自由になる年を逆算するために使います。"],["投資可能な資産","預金・投資信託・株など投資に回せるお金。自宅や車は含めず、通貨は統一してください。"],["毎月の手取り収入","実際に口座に入るお金。給与も副業も含めます。"],["現在の毎月の支出","今実際に使っている額：家賃、食費、交通、娯楽、ローン返済まで全部です。"],["自由後の毎月の支出","理想の暮らしに毎月いくら必要か（今の物価で）。目標資産を決める最重要項目です。"],["期待年利回り %","投資で1年に増える割合。長期で堅実なら4–8%程度、楽観しすぎないで。"],["インフレ率 %","物価が毎年どれだけ上がるか。お金の価値は少しずつ下がります。通常2–3%。"],["安全な取り崩し率 %","自由後に毎年元本から使う割合。4%が定番で、低いほど安全です。"]],
+bd:"{n}歳で経済的自由",bk:"自由",st:["目標資産","必要な年数","毎月の貯蓄","実質利回り"],ft:"目標資産＝自由後の年間支出÷取り崩し率（現在の購買力）。参考値であり投資助言ではありません。",sh:"📸 シェア画像",pl:"📊 貯蓄プラン",pt:"あなたの長期貯蓄プラン",l1:"現在のプラン",l2:"20%多く貯蓄",ms:"{a}歳：資産が{v}に（{p}%）",fast:"毎月{s}（+20%）多く貯めると、{y}年早く自由になれます！",sv:"毎月{s}の貯蓄を続け、長期投資を心がけましょう。",ih:"長押し（または右クリック）で保存してシェアしましょう",shr:"共有",done:"🎉 資産はすでに目標を超えています。経済的自由を達成！",no:"今の収支では80年以内に達成できません。収入を増やすか支出を減らしてみましょう。",bad:"入力を確認してください：年齢・自由後の支出・取り崩し率は0より大きい値が必要です。"},
+fr:{n:"Français",lg:"Calculateur de liberté financière",s:"Découvrez l’année où votre patrimoine paiera enfin votre vie.",go:"🚀 Calculer",
+f:[["Âge actuel","Votre âge aujourd’hui, pour calculer l’année de votre liberté."],["Patrimoine investissable","Épargne, fonds, actions que vous pouvez investir. Hors résidence principale et voiture. Gardez une seule devise."],["Revenu mensuel net","L’argent qui arrive réellement sur votre compte, salaire et activités annexes inclus."],["Dépenses mensuelles actuelles","Ce que vous dépensez vraiment : logement, repas, transport, loisirs, crédits."],["Dépenses mensuelles une fois libre","La vie rêvée aux prix d’aujourd’hui. Elle fixe votre objectif : c’est la donnée clé."],["Rendement annuel attendu %","Gain annuel de vos placements. Sur le long terme, 4–8 % ; restez prudent."],["Inflation %","Hausse annuelle des prix : l’argent perd peu à peu sa valeur. Souvent 2–3 %."],["Taux de retrait sûr %","Part du capital dépensée chaque année une fois libre. 4 % est la référence ; moins, c’est plus sûr."]],
+bd:"Libre à {n} ans",bk:"LIBRE",st:["Capital cible","Années restantes","Épargne mensuelle","Rendement réel"],ft:"Cible = dépenses annuelles ÷ taux de retrait (pouvoir d’achat actuel). À titre indicatif, pas un conseil en investissement.",sh:"📸 Image à partager",pl:"📊 Plan d’épargne",pt:"Votre plan d’épargne long terme",l1:"Plan actuel",l2:"Épargner 20 % de plus",ms:"À {a} ans : patrimoine de {v} ({p} %)",fast:"Épargner {s} de plus par mois (+20 %) vous libère {y} ans plus tôt !",sv:"Continuez d’épargner {s} par mois et restez investi sur la durée.",ih:"Appuyez longuement (ou clic droit) pour enregistrer, puis partagez",shr:"Partager",done:"🎉 Votre patrimoine dépasse déjà l’objectif. Vous êtes libre !",no:"À ce rythme, l’objectif est hors de portée en 80 ans. Augmentez vos revenus ou réduisez vos dépenses.",bad:"Vérifiez : âge, dépenses futures et taux de retrait doivent être supérieurs à 0."},
+ru:{n:"Русский",lg:"Калькулятор финансовой свободы",s:"Узнайте, в каком году ваши активы начнут оплачивать вашу жизнь.",go:"🚀 Рассчитать",
+f:[["Текущий возраст","Ваш возраст сейчас, чтобы вычислить год свободы."],["Инвестируемые активы","Вклады, фонды, акции, которые можно инвестировать. Жильё и машина не считаются. Используйте одну валюту."],["Доход в месяц (после налогов)","Деньги, которые реально приходят на счёт: зарплата и подработки."],["Расходы в месяц сейчас","Что вы реально тратите: жильё, еда, транспорт, развлечения, кредиты."],["Расходы в месяц после свободы","Желаемая жизнь по сегодняшним ценам. Это определяет цель, главный параметр."],["Ожидаемая доходность в год %","Прирост инвестиций за год. Для долгосрочных консервативных стратегий 4–8 %, не завышайте."],["Инфляция %","Насколько растут цены: деньги постепенно обесцениваются. Обычно 2–3 %."],["Безопасная норма изъятия %","Доля капитала, которую вы тратите в год после обретения свободы. 4 % — классика, меньше — надёжнее."]],
+bd:"Свобода в возрасте {n}",bk:"СВОБОДА",st:["Целевой капитал","Лет осталось","Накопления в месяц","Реальная доходность"],ft:"Цель = годовые расходы ÷ норма изъятия (по сегодняшней покупательной способности). Только для ориентира, не инвестсовет.",sh:"📸 Картинка для соцсетей",pl:"📊 План накоплений",pt:"Ваш долгосрочный план накоплений",l1:"Текущий план",l2:"Копить на 20 % больше",ms:"{a} лет: капитал {v} ({p} %)",fast:"Если откладывать на {s} больше в месяц (+20 %), свобода наступит на {y} г. раньше!",sv:"Продолжайте откладывать {s} в месяц и инвестируйте надолго.",ih:"Нажмите и удерживайте (или ПКМ), чтобы сохранить и поделиться",shr:"Поделиться",done:"🎉 Ваши активы уже превышают цель. Вы финансово свободны!",no:"При таких доходах и расходах цель недостижима за 80 лет. Увеличьте доход или сократите траты.",bad:"Проверьте: возраст, будущие расходы и норма изъятия должны быть больше 0."}};
+const $=i=>document.getElementById(i),
+IC=["🎂","💰","📥","🛒","🏝️","📈","🔥","🛡️"],ID=["age","as","inc","exp","fx","ret","inf","swr"],DF=[28,100000,15000,9000,8000,6,3,4];
+let lg=(navigator.language||"zh").slice(0,2),R=null,tm;if(!L[lg])lg="zh";
+$("fm").innerHTML=ID.map((k,i)=>`<div class="c"><label for="${k}"><span class="ic">${IC[i]}</span><span id="l${i}"></span></label><input id="${k}" type="number" inputmode="decimal" enterkeyhint="done" min="0" value="${DF[i]}"><p class="h" id="h${i}"></p></div>`).join("");
+$("lang").innerHTML=Object.keys(L).map(k=>`<option value="${k}">${L[k].n}</option>`).join("");
+["💰","🪙","📈","🔥","💎","🏝️","☕","🌴","⭐","🎯"].forEach(e=>{const d=document.createElement("span");d.className="fl";d.textContent=e;d.style.cssText=`left:${Math.random()*95}vw;top:${Math.random()*90}vh;animation-delay:-${Math.random()*12}s`;$("bg").appendChild(d)});
+const f=v=>new Intl.NumberFormat(lg,{notation:"compact",maximumFractionDigits:1}).format(v);
+function ap(){const T=L[lg];document.documentElement.lang=lg;$("lang").value=lg;$("t").textContent=T.lg;document.title=T.lg;$("s").textContent=T.s;$("go").textContent=T.go;$("sh").textContent=T.sh;$("pl").textContent=T.pl;
+T.f.forEach((x,i)=>{$("l"+i).textContent=x[0];$("h"+i).textContent=x[1]});if(R)show(false)}
+function toast(m){const e=document.createElement("div");e.className="tt";e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),4200)}
+function sim(p,x){let a=p.as,s=[a];if(a>=p.tg)return{m:0,s};for(let m=1;m<=960;m++){a=a*(1+p.mr)+p.sv*(1+x);if(m%12==0)s.push(a);if(a>=p.tg){if(m%12)s.push(a);return{m,s}}if(a<=0&&p.sv<=0)break}return{m:-1,s}}
+function calc(){if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();const T=L[lg],v=ID.map(k=>+$(k).value);
+if(v.some(isNaN)||!(v[0]>0&&v[4]>0&&v[7]>0)){toast(T.bad);return}
+const p={age:v[0],as:v[1],inc:v[2],exp:v[3],fx:v[4],ret:v[5],inf:v[6],swr:v[7]};
+p.rl=(1+p.ret/100)/(1+p.inf/100)-1;p.mr=Math.pow(1+p.rl,1/12)-1;p.tg=p.fx*12/(p.swr/100);p.sv=p.inc-p.exp;
+const a=sim(p,0);if(a.m<0){toast(T.no);return}
+R={p,a,b:p.sv>0?sim(p,.2):a};show(true)}
+function cu(el,to){const t0=performance.now();(function s(t){const k=Math.min(1,(t-t0)/1200);el.textContent=f(to*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(s)})(t0)}
+function cf(){const C=["#12a594","#3b5bdb","#ffc857","#ff5d8f","#7ae0d3"];for(let i=0;i<48;i++){const e=document.createElement("i");e.className="cf";e.style.cssText=`left:${Math.random()*100}vw;background:${C[i%5]};animation-delay:${Math.random()*.8}s;animation-duration:${2+Math.random()*1.6}s`;document.body.appendChild(e);setTimeout(()=>e.remove(),4600)}}
+function show(an){const T=L[lg],{p,a}=R,y=a.m/12;$("res").style.display="block";
+$("by").textContent=new Date().getFullYear()+Math.ceil(y);$("bk").textContent=T.bk;$("bt").textContent=T.bd.replace("{n}",Math.ceil(p.age+y));
+const vs=[f(p.tg),y.toFixed(1),f(p.sv),(p.rl*100).toFixed(1)+"%"];
+$("st").innerHTML=T.st.map((l,i)=>`<div>${l}<b id="s${i}">${vs[i]}</b></div>`).join("");
+$("ft").textContent=(a.m?"":T.done+" ")+T.ft;$("sh").onclick=shot;$("pl").onclick=plan;
+if(an){cu($("s0"),p.tg);cf();$("res").scrollIntoView({behavior:"smooth"});clearTimeout(tm);tm=setTimeout(()=>{if(!$("im").classList.contains("on"))plan()},3800)}}
+function plan(){if(!R)return;const T=L[lg],{p,a,b}=R,W=600,H=280,P=36,Y=Math.max(a.s.length,b.s.length)-1||1,M=p.tg*1.1,
+X=i=>P+i*(W-P-12)/Y,V=v=>H-24-Math.max(0,Math.min(v,M))/M*(H-50),
+pa=s=>"M"+s.map((v,i)=>X(i).toFixed(1)+","+V(v).toFixed(1)).join("L"),
+ms=[.25,.5,.75,1].map(q=>({q,i:a.s.findIndex(v=>v>=q*p.tg)})).filter(o=>o.i>=0);
+const dots=ms.map(o=>`<circle cx="${X(o.i)}" cy="${V(a.s[o.i])}" r="5" fill="#ffc857" stroke="#0e1a40" stroke-width="2"/>`).join("");
+let h=`<svg viewBox="0 0 ${W} ${H}" style="width:100%"><line x1="${P}" y1="${V(p.tg)}" x2="${W-12}" y2="${V(p.tg)}" stroke="#d99a00" stroke-width="2" stroke-dasharray="6 5"/><text x="${P+4}" y="${V(p.tg)-6}" font-size="13" fill="#d99a00">${f(p.tg)}</text><line x1="${P}" y1="${H-24}" x2="${W-12}" y2="${H-24}" stroke="#8a9bbd"/>
+<path class="ln" pathLength="1" d="${pa(b.s)}" stroke="#3b5bdb"/><path class="ln" pathLength="1" d="${pa(a.s)}" stroke="#12a594"/>${dots}
+<text x="${P}" y="${H-6}" font-size="13" fill="#8a9bbd">${p.age}</text><text x="${W-12}" y="${H-6}" font-size="13" fill="#8a9bbd" text-anchor="end">${Math.round(p.age+Y)}</text></svg>
+<p class="h"><b style="color:#12a594">━</b> ${T.l1} &nbsp; <b style="color:#3b5bdb">━</b> ${T.l2}</p>
+<ul class="ms">${ms.map(o=>`<li>${T.ms.replace("{a}",Math.round(p.age+o.i)).replace("{v}",f(a.s[o.i])).replace("{p}",o.q*100)}</li>`).join("")}</ul>`;
+if(p.sv>0&&a.m>0&&b.m>=0)h+=`<p><b>${T.fast.replace("{s}",f(p.sv*.2)).replace("{y}",((a.m-b.m)/12).toFixed(1))}</b></p>`;
+if(p.sv>0)h+=`<p class="h">${T.sv.replace("{s}",f(p.sv))}</p>`;
+$("pt").textContent=T.pt;$("pc").innerHTML=h;$("pm").classList.add("on")}
+async function shot(){const T=L[lg],b=$("sh");b.disabled=true;
+try{const c=await html2canvas($("card"),{scale:2,backgroundColor:null,useCORS:true,scrollX:0,scrollY:-window.scrollY});$("img").src=c.toDataURL("image/png");$("ih").textContent=T.ih;$("nsh").textContent=T.shr;$("im").classList.add("on");
+c.toBlob(bl=>{const fl=new File([bl],"freedom.png",{type:"image/png"});$("nsh").style.display=navigator.canShare&&navigator.canShare({files:[fl]})?"inline-block":"none";$("nsh").onclick=()=>navigator.share({files:[fl],title:T.lg}).catch(()=>{})})}
+catch(e){toast("Screenshot unavailable")}b.disabled=false}
+$("go").onclick=calc;$("fm").onkeydown=e=>{if(e.key==="Enter")calc()};$("lang").onchange=e=>{lg=e.target.value;ap();if($("pm").classList.contains("on"))plan()};
+document.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>b.closest(".m").classList.remove("on"));
+document.querySelectorAll(".m").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("on")});
+ap();
+</script></body></html>
